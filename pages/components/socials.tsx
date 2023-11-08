@@ -1,5 +1,5 @@
 import Head from "next/head";
-import styles from "../styles/Socials.module.scss";
+import styles from "../styles/socials.module.scss";
 
 export interface ISocials {
   id: string;
