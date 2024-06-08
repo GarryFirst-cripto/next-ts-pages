@@ -2,6 +2,7 @@ import Head from "next/head";
 import Heading from "./components/heading";
 import Socials, { ISocials } from "./components/socials";
 import styles from "./styles/home.module.scss";
+import { useRouter } from 'next/router';
 
 export const getStaticProps = async () => {
   try {
@@ -24,14 +25,24 @@ export const getStaticProps = async () => {
   }
 };
 
-const Home = ({ socials }: { socials: [ISocials]}) => (
-  <div className={styles.wrapper}>
-    <Head>
-      <title>Home</title>
-    </Head>
-    <Heading text="Next.js Application" />
-    <Socials socials={socials} />
-  </div>
-);
+const Home = ({ socials }: { socials: [ISocials]}) => {
+
+  const router = useRouter();
+  const { postpage } = router.query;
+  if (postpage === 'true') {
+    router.push('/posts?logg=true');
+    return null
+  }
+  
+  return (
+    <div className={styles.wrapper}>
+      <Head>
+        <title>Home</title>
+      </Head>
+      <Heading text="Next.js Application" />
+      <Socials socials={socials} />
+    </div>
+  )
+};
 
 export default Home;

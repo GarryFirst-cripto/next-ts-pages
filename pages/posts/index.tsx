@@ -2,36 +2,28 @@ import Head from "next/head";
 import Link from "next/link";
 import Heading from "../components/heading";
 import { IPost } from '../components/postInfo';
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
-import { GetStaticProps, GetStaticPropsContext } from 'next'
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { GetStaticProps, GetServerSideProps, GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 
-// export const getStaticProps: GetStaticProps = async (context: GetStaticPropsContext) => {
+interface CombinedPageProps {
+  posts: IPost[]
+  authorized: boolean
+}
 
-//   console.log('YYYYYYYYY', context)
+const Posts = (props: CombinedPageProps) => {
 
-//   const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-//   const data = await response.json();
+  const { authorized, posts } = props;
 
-//   if (!data) {
-//     return {
-//       notFound: true,
-//     }
-//   }
+  if (!authorized) {
+    return <div>Access Denied</div>
+  }
 
-//   return {
-//     props: { posts: data },
-//   }
-// };
-
-const Posts = ({ posts }: { posts: [IPost] }) => { 
   const [logg, setLogg] = useState(false);
+  const router = useRouter();
 
-  const router = useRouter()
-console.log('XXXXXXXXXX')
   useEffect(() => {
     const token = localStorage.getItem('token')
-console.log('TTTTTT', token);
     if (!token) {
       router.push('/')
     } else {
@@ -60,3 +52,41 @@ console.log('TTTTTT', token);
 };
 
 export default Posts;
+
+// export const getStaticProps: GetStaticProps = async (context: GetStaticPropsContext) => {
+//   const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+//   const data = await response.json();
+
+//   if (!data) {
+//     return { notFound: true }
+//   }
+
+//   return {
+//     props: { posts: data },
+//   }
+// };
+
+export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
+  const { req } = context
+  const token = req.headers.authorization || null
+console.log('111111111111', req.headers.authorization)
+  if (!token) {
+    return {
+      props: {
+        authorized: false,
+        posts: []
+      },
+    }
+  }
+
+  const isValidToken = true;
+  const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+  const posts = await response.json();
+
+  return {
+    props: {
+      authorized: isValidToken,
+      posts
+    },
+  }
+}
