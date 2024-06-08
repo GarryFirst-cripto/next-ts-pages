@@ -4,7 +4,7 @@ import Heading from "../components/heading";
 import { IPost } from '../components/postInfo';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { GetStaticProps, GetServerSideProps, GetServerSidePropsContext, GetStaticPropsContext } from 'next';
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 
 interface CombinedPageProps {
   posts: IPost[]

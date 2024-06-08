@@ -7,7 +7,7 @@ export interface ISocials {
   path: string;
 }
 
-const Socials = ({ socials }: { socials: [ISocials] }) => {
+const Socials = ({ socials }: { socials: ISocials[] }) => {
 
   if (!socials) {
     return null;
@@ -15,18 +15,15 @@ const Socials = ({ socials }: { socials: [ISocials] }) => {
 
   return (
     <>
-    {/* <Head>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.css" />
-    </Head> */}
-    <ul className={styles.socials}>
-      {socials && socials.map(({ id, icon, path }) => (
-        <li key={id}>
-          <a href={path} target="_blank" rel="noopener noreferrer">
-            <i className={`fab fa-${icon}`} aria-hidden="true" />
-          </a>
-        </li>
-      ))}
-    </ul>
+      <ul className={styles.socials}>
+        {socials && socials.map(({ id, icon, path }) => (
+          <li key={id}>
+            <a href={path} target="_blank" rel="noopener noreferrer">
+              <i className={`fab fa-${icon}`} aria-hidden="true" />
+            </a>
+          </li>
+        ))}
+      </ul>
     </>
   );
 }
