@@ -12,7 +12,7 @@ interface IData {
 
 export const getStaticPaths = async () => {
   const response = await fetch('https://jsonplaceholder.typicode.com/posts/');
-  const data: [IData] = await response.json();
+  const data: IData[] = await response.json();
 
   const paths = data.map(({ id }) => ({
     params: { id: id.toString() }
